@@ -1,7 +1,13 @@
 import axios from "axios";
 
+const defaultApiUrl = import.meta.env.PROD
+  ? "https://backend-two-eta-lsujmo71oa.vercel.app/api"
+  : "http://localhost:5000/api";
+const configuredApiUrl = (import.meta.env.VITE_API_BASE_URL || "").trim();
+const apiUrl = (configuredApiUrl || defaultApiUrl).replace(/\/+$/, "");
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ,
+  baseURL: apiUrl.endsWith("/api") ? apiUrl : `${apiUrl}/api`,
 });
 
 apiClient.interceptors.request.use((config) => {
